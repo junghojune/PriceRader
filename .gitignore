@@ -206,7 +206,7 @@ $RECYCLE.BIN/
 *.lnk
 
 ### Gradle ###
-.gradle
+priceradar/.gradle
 **/build/
 !src/**/build/
 
