@@ -24,9 +24,6 @@ public class Product extends BaseEntity {
     @Column(name = "image_url")
     private String imageUrl;
 
-    @Column(name = "sale_link")
-    private String saleLink;
-
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private List<ProductInfo> productInfos = new ArrayList<>();
 }
