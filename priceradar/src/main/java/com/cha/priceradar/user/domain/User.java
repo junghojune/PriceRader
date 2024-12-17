@@ -1,5 +1,6 @@
 package com.cha.priceradar.user.domain;
 
+import com.cha.priceradar.common.domain.BaseEntity;
 import com.cha.priceradar.common.domain.UserRole;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -12,7 +13,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "pr_user")
-public class User {
+public class User extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
