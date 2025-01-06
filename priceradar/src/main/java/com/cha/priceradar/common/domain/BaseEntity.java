@@ -42,6 +42,6 @@ public abstract class BaseEntity {
     private LocalDateTime deletedAt;
 
     @Column(name = "is_deleted", nullable = false)
-    private boolean is_deleted = false;
+    private boolean isDeleted = false;
 }
 
