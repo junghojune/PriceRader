@@ -1,8 +1,5 @@
 package com.cha.priceradar.product.service;
 
-import static com.cha.priceradar.common.domain.UserRole.USER;
-
-import com.cha.priceradar.common.domain.UserRole;
 import com.cha.priceradar.naver.dto.ItemDto;
 import com.cha.priceradar.product.domain.Product;
 import com.cha.priceradar.product.dto.ProductDto;
@@ -26,6 +23,10 @@ public class ProductService {
 
     public Page<ProductDto> searchProduct(Long userId, Pageable pageable) {
         return productRepository.findAllByUser_UserId(userId, pageable).map(ProductDto::from);
+    }
+
+    public Page<ProductInfoDto> getProduct(Long productId, Pageable pageable) {
+        return productInfoRepository.findAllByProduct_ProductId(productId, pageable).map(ProductInfoDto::from);
     }
 
     @Transactional
