@@ -4,7 +4,16 @@ import com.cha.priceradar.common.domain.BaseEntity;
 import com.cha.priceradar.product.domain.Product;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@Builder
+@Getter
 @Entity
 @Table(name = "pr_product_Info")
 public class ProductInfo extends BaseEntity {
