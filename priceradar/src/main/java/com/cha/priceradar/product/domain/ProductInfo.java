@@ -2,8 +2,10 @@ package com.cha.priceradar.product.domain;
 
 import com.cha.priceradar.common.domain.BaseEntity;
 import com.cha.priceradar.naver.dto.ItemDto;
+import com.cha.priceradar.user.domain.User;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -39,5 +41,11 @@ public class ProductInfo extends BaseEntity {
                 .price(price)
                 .saleLink(saleLink)
                 .build();
+    }
+
+    public void delete(User user) {
+        setIsDeleted(true);
+        setDeletedAt(LocalDateTime.now());
+        setDeletedBy(user.getEmail());
     }
 }

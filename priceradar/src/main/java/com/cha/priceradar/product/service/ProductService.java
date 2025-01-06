@@ -40,4 +40,13 @@ public class ProductService {
         ProductInfoDto productInfoDto = ProductInfoDto.of(item);
         productInfoRepository.save(productInfoDto.toEntity(product));
     }
+
+    @Transactional
+    public void deleteProduct(Long userId, Long productId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow();
+
+        Product product = productRepository.findByProductId(productId).orElseThrow();
+        product.delete(user);
+    }
 }

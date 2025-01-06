@@ -12,6 +12,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import java.time.LocalDateTime;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import lombok.AccessLevel;
@@ -56,6 +57,13 @@ public class Product extends BaseEntity {
                 .brand(brand)
                 .imageUrl(imageURl)
                 .build();
+    }
+
+    public void delete(User user) {
+        setIsDeleted(true);
+        setDeletedAt(LocalDateTime.now());
+        setDeletedBy(user.getEmail());
+        this.productInfos.forEach(productInfo -> productInfo.delete(user));
     }
 }
 

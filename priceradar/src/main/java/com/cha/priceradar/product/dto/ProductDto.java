@@ -35,7 +35,7 @@ public record ProductDto(
                 .modifiedAt(entity.getModifiedAt())
                 .deletedBy(entity.getDeletedBy())
                 .deletedAt(entity.getDeletedAt())
-                .isDeleted(entity.isDeleted())
+                .isDeleted(entity.getIsDeleted())
                 .build();
     }
 
