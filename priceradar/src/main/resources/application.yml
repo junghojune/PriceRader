@@ -15,3 +15,12 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
     show-sql: true
+
+naver:
+  client:
+    id: ${NAVER_CLIENT_ID}
+    secret: ${NAVER_CLIENT_SECRET}
+  search:
+    base_url: ${NAVER_SEARCH_BASER_URL}
+    shop:
+      json: ${NAVER_SEARCH_SHOP_JSON}
