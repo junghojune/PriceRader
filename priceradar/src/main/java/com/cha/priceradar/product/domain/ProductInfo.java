@@ -1,7 +1,7 @@
-package com.cha.priceradar.productInfo.domain;
+package com.cha.priceradar.product.domain;
 
 import com.cha.priceradar.common.domain.BaseEntity;
-import com.cha.priceradar.product.domain.Product;
+import com.cha.priceradar.naver.dto.ItemDto;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import lombok.AccessLevel;
@@ -32,4 +32,12 @@ public class ProductInfo extends BaseEntity {
 
     @Column(name = "sale_link")
     private String saleLink;
+
+    public static ProductInfo of(Product product, BigDecimal price, String saleLink) {
+        return ProductInfo.builder()
+                .product(product)
+                .price(price)
+                .saleLink(saleLink)
+                .build();
+    }
 }

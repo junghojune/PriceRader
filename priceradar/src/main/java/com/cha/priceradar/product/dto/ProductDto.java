@@ -1,11 +1,10 @@
 package com.cha.priceradar.product.dto;
 
+import com.cha.priceradar.naver.dto.ItemDto;
 import com.cha.priceradar.product.domain.Product;
-import com.cha.priceradar.productInfo.dto.ProductInfoDto;
+import com.cha.priceradar.user.domain.User;
 import com.cha.priceradar.user.dto.UserDto;
 import java.time.LocalDateTime;
-import java.util.Set;
-import java.util.stream.Collectors;
 import lombok.Builder;
 
 @Builder
@@ -38,5 +37,17 @@ public record ProductDto(
                 .deletedAt(entity.getDeletedAt())
                 .isDeleted(entity.isDeleted())
                 .build();
+    }
+
+    public static ProductDto of(ItemDto product) {
+        return ProductDto.builder()
+                .name(product.getTitle())
+                .brand(product.getBrand())
+                .imageURl(product.getImage())
+                .build();
+    }
+
+    public Product toEntity(User user) {
+        return Product.of(user, name, brand, imageURl);
     }
 }

@@ -1,6 +1,8 @@
-package com.cha.priceradar.productInfo.dto;
+package com.cha.priceradar.product.dto;
 
-import com.cha.priceradar.productInfo.domain.ProductInfo;
+import com.cha.priceradar.naver.dto.ItemDto;
+import com.cha.priceradar.product.domain.Product;
+import com.cha.priceradar.product.domain.ProductInfo;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import lombok.Builder;
@@ -32,6 +34,17 @@ public record ProductInfoDto(
                 .deletedBy(entity.getDeletedBy())
                 .deletedAt(entity.getDeletedAt())
                 .isDeleted(entity.isDeleted())
+                .build();
+    }
+
+    public ProductInfo toEntity(Product product) {
+        return ProductInfo.of(product, price, saleLink);
+    }
+
+    public static ProductInfoDto of(ItemDto item) {
+        return ProductInfoDto.builder()
+                .price(BigDecimal.valueOf(item.getLprice()))
+                .saleLink(item.getLink())
                 .build();
     }
 }

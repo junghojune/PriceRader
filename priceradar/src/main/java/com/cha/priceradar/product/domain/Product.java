@@ -1,7 +1,6 @@
 package com.cha.priceradar.product.domain;
 
 import com.cha.priceradar.common.domain.BaseEntity;
-import com.cha.priceradar.productInfo.domain.ProductInfo;
 import com.cha.priceradar.user.domain.User;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -49,5 +48,14 @@ public class Product extends BaseEntity {
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private Set<ProductInfo> productInfos = new LinkedHashSet<>();
+
+    public static Product of(User user, String name, String brand, String imageURl) {
+        return Product.builder()
+                .user(user)
+                .name(name)
+                .brand(brand)
+                .imageUrl(imageURl)
+                .build();
+    }
 }
 
