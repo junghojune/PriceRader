@@ -39,8 +39,7 @@ public class ProductService {
         ProductDto productDto = ProductDto.of(item);
         Product product = productRepository.save(productDto.toEntity(user));
 
-        ProductInfoDto productInfoDto = ProductInfoDto.of(item);
-        productInfoRepository.save(productInfoDto.toEntity(product));
+        updateProductInfo(product, item);
     }
 
     @Transactional
@@ -58,8 +57,13 @@ public class ProductService {
                 .orElseThrow();
 
         Product product = productRepository.findByProductId(productId).orElseThrow();
-        ItemDto itemDto = naverService.getItems(product.getName());
+        ItemDto item = naverService.getItems(product.getName());
 
+        updateProductInfo(product, item);
+    }
+
+    @Transactional
+    public void updateProductInfo(Product product, ItemDto itemDto) {
         ProductInfoDto  productInfoDto = ProductInfoDto.of(itemDto);
         productInfoRepository.save(productInfoDto.toEntity(product));
     }
