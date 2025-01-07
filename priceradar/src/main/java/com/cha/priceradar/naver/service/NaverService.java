@@ -56,6 +56,27 @@ public class NaverService {
         return fromJSONtoItems(responseEntity.getBody());
     }
 
+    public ItemDto getItems(String keyword) {
+        URI uri = UriComponentsBuilder
+                .fromUriString(NAVER_BASE_URL)
+                .path(NAVER_SEARCH_SHOP_URL_TO_JSON)
+                .queryParam("display", 1)
+                .queryParam("query", keyword)
+                .encode()
+                .build()
+                .toUri();
+
+        RequestEntity<Void> requestEntity = RequestEntity
+                .get(uri)
+                .header("X-Naver-Client-Id", NAVER_CLIENT_ID)
+                .header("X-Naver-Client-Secret", NAVER_CLIENT_SECRET)
+                .build();
+
+        ResponseEntity<String> responseEntity = restTemplate.exchange(requestEntity, String.class);
+
+        return fromJSONtoItems(responseEntity.getBody()).get(0);
+    }
+
     public List<ItemDto> fromJSONtoItems(String responseEntity) {
         JSONObject jsonObject = new JSONObject(responseEntity);
         JSONArray items  = jsonObject.getJSONArray("items");

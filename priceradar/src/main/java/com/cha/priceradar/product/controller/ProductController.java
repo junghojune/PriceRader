@@ -35,7 +35,7 @@ public class ProductController {
 
     @GetMapping("/{productId}")
     public Page<ProductInfoResponse> getProduct(
-            @PathVariable Long productId,
+            @PathVariable(value = "productId") Long productId,
             @PageableDefault(size = 10, sort = "createdAt", direction = Direction.DESC) Pageable pageable
     ) {
         return productService.getProduct(productId, pageable).map(ProductInfoResponse::from);
@@ -49,13 +49,16 @@ public class ProductController {
         productService.createProduct(userId, product);
     }
 
-    @PutMapping
-    public void updateProduct() {
+    @PutMapping("/{productId}")
+    public void updateProduct(
+            @PathVariable(value = "productId") Long productId
+    ) {
+        productService.updateProduct(1L, productId);
     }
 
     @DeleteMapping("/{productId}")
     public void deleteProduct(
-            @PathVariable Long productId
+            @PathVariable(value = "productId") Long productId
     ) {
         productService.deleteProduct(1L, productId);
     }
