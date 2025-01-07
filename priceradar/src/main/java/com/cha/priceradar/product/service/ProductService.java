@@ -1,6 +1,7 @@
 package com.cha.priceradar.product.service;
 
 import com.cha.priceradar.naver.dto.ItemDto;
+import com.cha.priceradar.naver.service.NaverService;
 import com.cha.priceradar.product.domain.Product;
 import com.cha.priceradar.product.dto.ProductDto;
 import com.cha.priceradar.product.dto.ProductInfoDto;
@@ -20,6 +21,7 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final ProductInfoRepository productInfoRepository;
     private final UserRepository userRepository;
+    private final NaverService naverService;
 
     public Page<ProductDto> searchProduct(Long userId, Pageable pageable) {
         return productRepository.findAllByUser_UserId(userId, pageable).map(ProductDto::from);
@@ -37,8 +39,7 @@ public class ProductService {
         ProductDto productDto = ProductDto.of(item);
         Product product = productRepository.save(productDto.toEntity(user));
 
-        ProductInfoDto productInfoDto = ProductInfoDto.of(item);
-        productInfoRepository.save(productInfoDto.toEntity(product));
+        updateProductInfo(product, item);
     }
 
     @Transactional
@@ -48,5 +49,22 @@ public class ProductService {
 
         Product product = productRepository.findByProductId(productId).orElseThrow();
         product.delete(user);
+    }
+
+    @Transactional
+    public void updateProduct(Long userId, Long productId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow();
+
+        Product product = productRepository.findByProductId(productId).orElseThrow();
+        ItemDto item = naverService.getItems(product.getName());
+
+        updateProductInfo(product, item);
+    }
+
+    @Transactional
+    public void updateProductInfo(Product product, ItemDto itemDto) {
+        ProductInfoDto  productInfoDto = ProductInfoDto.of(itemDto);
+        productInfoRepository.save(productInfoDto.toEntity(product));
     }
 }
