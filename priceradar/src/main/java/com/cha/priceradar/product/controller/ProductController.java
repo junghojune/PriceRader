@@ -53,7 +53,7 @@ public class ProductController {
     public void updateProduct() {
     }
 
-    @DeleteMapping("/{productId}/delete")
+    @DeleteMapping("/{productId}")
     public void deleteProduct(
             @PathVariable Long productId
     ) {
