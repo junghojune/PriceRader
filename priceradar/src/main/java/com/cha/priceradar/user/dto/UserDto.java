@@ -45,6 +45,13 @@ public record UserDto(
                 .build();
     }
 
+    public static UserDto loginOf(String email, String password) {
+        return UserDto.builder()
+                .email(email)
+                .password(password)
+                .build();
+    }
+
     public User toEntity(String encodePassword) {
         return User.create(email, username, encodePassword);
     }
