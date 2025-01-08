@@ -24,3 +24,10 @@ naver:
     base_url: ${NAVER_SEARCH_BASER_URL}
     shop:
       json: ${NAVER_SEARCH_SHOP_JSON}
+
+
+jwt:
+  access:
+    key: ${JWT_ACCESS_KEY}
+  refresh:
+    key: ${JWT_REFRESH_KEY}
