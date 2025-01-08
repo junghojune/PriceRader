@@ -4,6 +4,8 @@ import com.cha.priceradar.naver.dto.ItemDto;
 import com.cha.priceradar.product.reponse.ProductInfoResponse;
 import com.cha.priceradar.product.reponse.ProductResponse;
 import com.cha.priceradar.product.service.ProductService;
+import com.cha.priceradar.security.user.AuthUser;
+import com.cha.priceradar.security.user.AuthUserInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -27,10 +29,10 @@ public class ProductController {
 
     @GetMapping
     public Page<ProductResponse> searchProduct(
-            @RequestParam Long userId,
+            @AuthUser AuthUserInfo userInfo,
             @PageableDefault(size = 10, sort = "createdAt", direction = Direction.DESC) Pageable pageable
     ) {
-        return productService.searchProduct(userId, pageable).map(ProductResponse::from);
+        return productService.searchProduct(userInfo.getId(), pageable).map(ProductResponse::from);
     }
 
     @GetMapping("/{productId}")
@@ -43,24 +45,26 @@ public class ProductController {
 
     @PostMapping
     public void createProduct(
-            @RequestParam Long userId,
+            @AuthUser AuthUserInfo userInfo,
             @RequestBody ItemDto product
     ) {
-        productService.createProduct(userId, product);
+        productService.createProduct(userInfo.getId(), product);
     }
 
     @PutMapping("/{productId}")
     public void updateProduct(
+            @AuthUser AuthUserInfo userInfo,
             @PathVariable(value = "productId") Long productId
     ) {
-        productService.updateProduct(1L, productId);
+        productService.updateProduct(userInfo.getId(), productId);
     }
 
     @DeleteMapping("/{productId}")
     public void deleteProduct(
+            @AuthUser AuthUserInfo userInfo,
             @PathVariable(value = "productId") Long productId
     ) {
-        productService.deleteProduct(1L, productId);
+        productService.deleteProduct(userInfo.getId(), productId);
     }
 
 }
