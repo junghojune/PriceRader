@@ -5,8 +5,10 @@ import static java.time.format.DateTimeFormatter.ISO_LOCAL_DATE;
 import com.cha.priceradar.common.domain.UserRole;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
+import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.Getter;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -19,25 +21,23 @@ import java.util.Properties;
 
 @Component
 public class JwtProvider {
-    private final Key accessKey;
-    private final Key refreshKey;
+
+    @Value("${jwt.access.key}")
+    private String accessKeyStr;
+    @Value("${jwt.refresh.key}")
+    private String refreshKeyStr;
 
     @Getter
     private final String grantType = "Bearer";
     private final DateTimeFormatter dateTimeFormatter = ISO_LOCAL_DATE;
 
-    public JwtProvider() {
-        try {
-            Properties properties = new Properties();
-            properties.load(getClass()
-                    .getClassLoader()
-                    .getResourceAsStream("token-secret.properties"));
+    private Key accessKey;
+    private Key refreshKey;
 
-            this.accessKey = decodeKey(properties,"jwt.access.key");
-            this.refreshKey = decodeKey(properties,"jwt.refresh.key");
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+    @PostConstruct
+    public void init() {
+        this.accessKey = decodeKey(accessKeyStr);
+        this.refreshKey = decodeKey(refreshKeyStr);
     }
 
     public Optional<String> resolveToken(HttpServletRequest request) {
@@ -50,13 +50,13 @@ public class JwtProvider {
         return Optional.empty();
     }
 
-    private Key decodeKey(Properties properties, String propertyKey) {
-        return Keys.hmacShaKeyFor(properties.getProperty(propertyKey).getBytes());
+    private Key decodeKey(String keyStr) {
+        return Keys.hmacShaKeyFor(keyStr.getBytes());
     }
 
     public TokenInfo generateToken(TokenableInfo payload) {
         LocalDateTime now = LocalDateTime.now();
-        LocalDateTime accessExpiredTime = now.plusHours(24); // TODO: 원복하기
+        LocalDateTime accessExpiredTime = now.plusHours(24);
         LocalDateTime refreshExpiredTime = now.plusDays(30);
 
         String accessToken = Jwts.builder()
