@@ -40,5 +40,14 @@ public class User extends BaseEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
     private UserRole role;
+
+    public static User create(String email, String username, String encodePassword) {
+        return User.builder()
+                .email(email)
+                .username(username)
+                .password(encodePassword)
+                .role(UserRole.USER)
+                .build();
+    }
 }
 
